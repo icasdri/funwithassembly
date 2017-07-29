@@ -1,6 +1,6 @@
 # Fun With Assembly
 
-A collection of interesting assembly programs and C programs that call into assembly for `Linux x86_64`.
+A collection of fun/interesting assembly programs and C programs that call into assembly for `Linux x86_64`.
 
 ## Assembling/Building
 
