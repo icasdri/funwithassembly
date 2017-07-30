@@ -68,9 +68,9 @@ int print_jit(char *s) {
 
     /* first char put */
     // mov BYTE [rsp],...
-    buf[0] = 0xc6;
-    buf[1] = 0x04;
-    buf[2] = 0x24;
+    buf[0] = 0x41;
+    buf[1] = 0xc6;
+    buf[2] = 0x06;
     buf[3] = s[0];
 
     buf += 4;
@@ -79,9 +79,9 @@ int print_jit(char *s) {
     /* remaining char puts */
     for (unsigned char i = 1; i < n; i++) {
         // mov BYTE [r14 + i],...
-        buf[0] = 0xc6;
-        buf[1] = 0x44;
-        buf[2] = 0x24;
+        buf[0] = 0x41;
+        buf[1] = 0xc6;
+        buf[2] = 0x46;
         buf[3] = i;
         buf[4] = s[i];
         buf += 5;

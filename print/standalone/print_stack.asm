@@ -12,19 +12,19 @@ theprintfunc:
     sub rsp,13   ; get more stack space
     mov r14,rsp  ; address to our stack buffer
 
-    mov BYTE [rsp],'H'
-    mov BYTE [rsp + 1],'e'
-    mov BYTE [rsp + 2],'l'
-    mov BYTE [rsp + 3],'l'
-    mov BYTE [rsp + 4],'o'
-    mov BYTE [rsp + 5],' '
-    mov BYTE [rsp + 6],'W'
-    mov BYTE [rsp + 7],'o'
-    mov BYTE [rsp + 8],'r'
-    mov BYTE [rsp + 9],'l'
-    mov BYTE [rsp + 10],'d'
-    mov BYTE [rsp + 11],'!'
-    mov BYTE [rsp + 12],10  ; newline
+    mov BYTE [r14],'H'
+    mov BYTE [r14 + 1],'e'
+    mov BYTE [r14 + 2],'l'
+    mov BYTE [r14 + 3],'l'
+    mov BYTE [r14 + 4],'o'
+    mov BYTE [r14 + 5],' '
+    mov BYTE [r14 + 6],'W'
+    mov BYTE [r14 + 7],'o'
+    mov BYTE [r14 + 8],'r'
+    mov BYTE [r14 + 9],'l'
+    mov BYTE [r14 + 10],'d'
+    mov BYTE [r14 + 11],'!'
+    mov BYTE [r14 + 12],10  ; newline
 
     mov rax,1    ; write
     mov rdi,1    ; fd 1 (stdout)
