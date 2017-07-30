@@ -34,7 +34,7 @@ static inline void write_n(unsigned char *buf, size_t n) {
 int print_jit(char *s) {
     size_t n = strlen(s);
     if (n <= 0) return 0;
-    if (n > 255) return 1;  // invalid arg, we only support string lengths < 255
+    if (n >= 128) return 1;  // we only support string lengths < 128
 
     size_t len = 0 \
        + sizeof(mmap_template)  // mmap syscall
@@ -110,8 +110,18 @@ int print_jit(char *s) {
     // execute it!
     void (*func)(void) = (void (*)(void)) root_buf;
     (*func)();
+
+    if (munmap(root_buf, len)) return 4;
+
+    return 0;
 }
 
-int main() {
-    return print_jit("Hello World. This is working!\n");
+int main(size_t argc, char *argv[]) {
+    char *msg = "Hello World!";
+    if (argc == 2) msg = argv[1];
+
+    int r = print_jit(msg);
+    if (!r) printf("\n");
+
+    return r;
 }

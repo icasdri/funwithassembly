@@ -22,7 +22,7 @@ static inline void write_n(unsigned char *buf, size_t n) {
 int print_jit(char *s) {
     size_t slen = strlen(s);
     if (slen <= 0) return 0;
-    if (slen > 255) return 1;  // invalid arg, we only support string lengths < 255
+    if (slen >= 128) return 1;  // we only support string lengths < 128
 
     unsigned char n = slen;
 
@@ -124,6 +124,12 @@ int print_jit(char *s) {
     return 0;
 }
 
-int main() {
-    return print_jit("Hello World! Executing a hand-crafted mmap-ed buffer of stack-based print instructions!\n");
+int main(size_t argc, char *argv[]) {
+    char *msg = "Hello World!";
+    if (argc == 2) msg = argv[1];
+
+    int r = print_jit(msg);
+    if (!r) printf("\n");
+
+    return r;
 }
