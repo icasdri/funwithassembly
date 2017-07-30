@@ -16,7 +16,7 @@ static const char mmap_template[] = {
 };
 static const off_t mmap_n_offset = 11;
 
-const char write_template[] = {
+static const char write_template[] = {
     0xb8, 0x01, 0x00, 0x00, 0x00,  // mov rax,1    ; write
     0xbf, 0x01, 0x00, 0x00, 0x00,  // mov rdi,1    ; fd 1 (stdout)
     0x4c, 0x89, 0xf6,              // mov rsi,r14  ; addr of buffer (stored in r14)
