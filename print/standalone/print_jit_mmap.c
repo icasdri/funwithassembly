@@ -32,7 +32,7 @@ static inline void write_n(unsigned char *buf, size_t n) {
 }
 
 int print_jit(char *s) {
-    size_t n = strlen(s);
+    size_t n = strnlen(s, 129);
     if (n <= 0) return 0;
     if (n >= 128) return 1;  // we only support string lengths < 128
 

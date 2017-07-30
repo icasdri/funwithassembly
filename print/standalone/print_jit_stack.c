@@ -20,7 +20,7 @@ static inline void write_n(unsigned char *buf, size_t n) {
 }
 
 int print_jit(char *s) {
-    size_t slen = strlen(s);
+    size_t slen = strnlen(s, 129);
     if (slen <= 0) return 0;
     if (slen >= 128) return 1;  // we only support string lengths < 128
     unsigned char n = slen;
