@@ -23,11 +23,10 @@ int print_jit(char *s) {
     size_t slen = strlen(s);
     if (slen <= 0) return 0;
     if (slen >= 128) return 1;  // we only support string lengths < 128
-
     unsigned char n = slen;
 
-    /* ALLOCATE THE BUFFER */
 
+    /* ALLOCATE THE BUFFER */
     size_t len = 0 \
        + 4   // stack increase
        + 3   // save stack pointer
@@ -41,42 +40,37 @@ int print_jit(char *s) {
     unsigned char *root_buf = mmap(NULL, len,
         PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS,
         -1, 0);
+
+    if (root_buf == NULL) return 2;
+
     unsigned char *buf = root_buf;
 
-    if (buf == NULL) return 2;
 
     /* FILL THE BUFFER */
-
-    /* stack increase */
-    // sub rsp,n
+    // stack increase
+    //   sub rsp,n
     buf[0] = 0x48;
     buf[1] = 0x83;
     buf[2] = 0xec;
     buf[3] = n;
-
     buf += 4;
 
-
-    /* save stack pointer */
-    // mov r14,rsp
+    // save stack pointer
+    //   mov r14,rsp
     buf[0] = 0x49;
     buf[1] = 0x89;
     buf[2] = 0xe6;
-
     buf += 3;
 
-
-    /* first char put */
-    // mov BYTE [rsp],...
+    // first char put
+    //   mov BYTE [rsp],...
     buf[0] = 0x41;
     buf[1] = 0xc6;
     buf[2] = 0x06;
     buf[3] = s[0];
-
     buf += 4;
 
-
-    /* remaining char puts */
+    // remaining char puts
     for (unsigned char i = 1; i < n; i++) {
         // mov BYTE [r14 + i],...
         buf[0] = 0x41;
@@ -87,29 +81,29 @@ int print_jit(char *s) {
         buf += 5;
     }
 
-    /* write syscall */
+    // write syscall
     memcpy(buf, write_template, sizeof(write_template));
     write_n(buf + write_n_offset, n);
 
     buf += sizeof(write_template);
 
-    /* stack restore */
-    // add rsp,n
+    // stack restore
+    //   add rsp,n
     buf[0] = 0x48;
     buf[1] = 0x83;
     buf[2] = 0xc4;
     buf[3] = n;
-
     buf += 4;
 
-    /* return */
+    // return
+    //   ret
     buf[0] = 0xc3;
-
     buf += 1;
 
-    buf = NULL;
 
     /* EXECUTE THE BUFFER */
+    // no more writing to buf
+    buf = NULL
 
     // mark as executable
     if (mprotect(root_buf, len, PROT_READ | PROT_EXEC)) return 3;
