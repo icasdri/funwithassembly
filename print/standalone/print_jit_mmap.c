@@ -50,7 +50,7 @@ int print_jit(char *s) {
         -1, 0);
     unsigned char *buf = root_buf;
 
-    if (buf == NULL) return 2;
+    if (buf == MAP_FAILED) return 2;
 
     /* mmap part */
     memcpy(buf, mmap_template, sizeof(mmap_template));

@@ -11,7 +11,7 @@ int main() {
             MAP_PRIVATE | MAP_ANONYMOUS,
             -1, 0);
 
-    if (buf == NULL) {
+    if (buf == MAP_FAILED) {
         return 2;
     }
 

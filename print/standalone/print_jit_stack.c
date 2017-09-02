@@ -41,7 +41,7 @@ int print_jit(char *s) {
         PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS,
         -1, 0);
 
-    if (root_buf == NULL) return 2;
+    if (root_buf == MAP_FAILED) return 2;
 
     unsigned char *buf = root_buf;
 

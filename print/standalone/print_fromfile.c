@@ -24,7 +24,7 @@ int main() {
         PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS,
         -1, 0);
 
-    if (buf == NULL) {
+    if (buf == MAP_FAILED) {
         fprintf(stderr, "Failed to map %zu bytes of memory.\n", len);
         return 4;
     }
